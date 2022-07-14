@@ -3,7 +3,6 @@ import Table from 'react-bootstrap/Table';
 export default function ResumenUser() {
     return (
         <>
-            <p>Estes es el resumen</p>
             <Table responsive striped size="sm">
                 <thead>
                     <tr>

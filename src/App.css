@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.prueba{
+  height: calc(100vh - 58px);
+}
+
+.sidebar{
+  height: calc(100vh - 58px);
+  border-right: 1px solid gray;
+
+}
