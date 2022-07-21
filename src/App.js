@@ -10,6 +10,7 @@ import Sidebar from './pages/Sidebar';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { ThreeDotsVertical } from 'react-bootstrap-icons';
+import Login from './pages/login';
 
 import { useState } from 'react';
 
@@ -22,7 +23,7 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [active, setActive] = useState("resumen");
+  const [active, setActive] = useState("login");
 
   return (
     <div className="App">
@@ -38,9 +39,10 @@ function App() {
             />
           </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link>Home</Nav.Link>
+            <Nav.Link >Home</Nav.Link>
             <Nav.Link>Otro</Nav.Link>
             <Nav.Link>Si</Nav.Link>
+            <Button variant="outline-success" onClick={()=>{setActive('resumen')}}>Resumen</Button>
           </Nav>
           <Nav className="justify-content-end">
             <div className='d-sm-none'>
@@ -87,9 +89,10 @@ function App() {
             <div style={{ overflowY: 'auto' }} className='cosas'>
 
 
-              {active === "resumen" && <GraficoAdmin />}
+              {active === "resumen" && <GraficoAdmin /> }
+              <br/>
               {active === "resumen" && <ResumenUser />}
-              {active === "actualizar" && <p>actualizar</p>}
+              {active === "login" && <Login/>}
             
             
             </div>
