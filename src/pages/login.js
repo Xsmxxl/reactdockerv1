@@ -10,9 +10,6 @@ import { useState } from 'react';
         .then(data => data.json())
 }*/
 
-//import PropTypes from 'prop-types';
-
-//export default function Login({ setLogin }) {
 export default function Login() {
 
     const [username, setUserName] = useState();
@@ -26,9 +23,10 @@ export default function Login() {
         if(!password){
             console.log("No hay nada en password");
         }
-        if(username == "xsm"){
-            if(password == "123"){
+        if(username === "xsm"){
+            if(password === "123"){
                 sessionStorage.removeItem('isLogged');
+                sessionStorage.setItem('isLogged', true);
                 //setLogin(true);
             }
         }
@@ -36,7 +34,7 @@ export default function Login() {
 
     return (
         <>
-            <div className="login-wrapper">
+            <div>
                 <h1>Please Log In</h1>
                 <form onSubmit={handleSubmit}>
                     <label>
@@ -55,7 +53,3 @@ export default function Login() {
         </>
     );
 }
-
-/*Login.propTypes = {
-    setLogin: PropTypes.func.isRequired
-  };*/

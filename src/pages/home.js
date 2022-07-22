@@ -23,8 +23,14 @@ export default function Home() {
     const [active, setActive] = useState("resumen");
 
     const evento = (eventKey) => {
-        if(eventKey == 1){
+        if(eventKey === "1"){
             sessionStorage.removeItem('isLogged');
+        }
+        if(eventKey === "2"){
+            setActive('resumen');
+        }
+        if(eventKey === "3"){
+            setActive('otro');
         }
     }
 
@@ -75,8 +81,8 @@ export default function Home() {
                     <Navbar expand='md' >
                         <Container>
                             <Nav className="flex-column" onSelect={evento}>
-                                <Nav.Link>Resumen</Nav.Link>
-                                <Nav.Link>Actualizar mis datos</Nav.Link>
+                                <Nav.Link eventKey="2">Resumen</Nav.Link>
+                                <Nav.Link eventKey="3">Actualizar mis datos</Nav.Link>
                                 <Nav.Link eventKey="1" href="/">Salir</Nav.Link>
                             </Nav>
                         </Container>
@@ -95,6 +101,7 @@ export default function Home() {
                             {active === "resumen" && <GraficoAdmin />}
                             <br />
                             {active === "resumen" && <ResumenUser />}
+                            {active === "otro" && <p>Otro</p>}
 
 
                         </div>

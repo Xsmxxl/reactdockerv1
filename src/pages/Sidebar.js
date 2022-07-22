@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 export default function Sidebar() {
     const evento = (eventKey) => {
-        if(eventKey == 1){
+        if(eventKey === "1"){
             sessionStorage.removeItem('isLogged');
         }
     }
