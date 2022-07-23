@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
+import serviceStateReducer from './features/services/serviceStateSlice'
 
-export default configureStore({
-  reducer: {},
+export const store = configureStore({
+  reducer: { serviceState: serviceStateReducer },
 })

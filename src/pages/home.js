@@ -9,10 +9,16 @@ import Sidebar from './Sidebar';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { ThreeDotsVertical } from 'react-bootstrap-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { salir } from "../features/services/serviceStateSlice";
 
 import { useState } from 'react';
 
 export default function Home() {
+
+    const dispatch = useDispatch()
+    
+    const serviceStates = useSelector(service => service.serviceState)
 
     const [show, setShow] = useState(false);
 
@@ -24,7 +30,8 @@ export default function Home() {
 
     const evento = (eventKey) => {
         if(eventKey === "1"){
-            sessionStorage.removeItem('isLogged');
+            //sessionStorage.removeItem('isLogged');
+            dispatch(salir());
         }
         if(eventKey === "2"){
             setActive('resumen');
