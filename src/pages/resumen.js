@@ -1,8 +1,10 @@
 import Table from 'react-bootstrap/Table';
+import GraficoAdmin from './admin/graph';
 
 export default function ResumenUser() {
     return (
         <>
+            <GraficoAdmin/><br/>
             <Table responsive striped size="sm">
                 <thead>
                     <tr>
