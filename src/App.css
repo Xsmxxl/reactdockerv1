@@ -40,3 +40,18 @@
 .ml-auto{
   align-items: baseline;
 }
+
+.selepapa{
+  
+  width: 100%;
+  position: relative;
+  left: calc(25% - 18px);
+}
+.selehijo{
+  width: 100%;
+}
+.transparente{
+  background-color: #e9ecef00!important;
+  color: #000000!important;
+  border: transparent!important;
+}

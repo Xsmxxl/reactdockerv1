@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,13 +14,16 @@ export default function MasterForm(props) {
     const data = useSelector((state) => state.serviceState);
     const dispatch = useDispatch();
 
+    const [guardar, setGuardar] = useState(false);
+
     const [state, setState] = useState({
         currentStep: 1,
         email: "",
         username: "",
         password: "",
         password2: "",
-        selectedValue: "",
+        selectedValue: 0,
+        selectedCantidad: 1,
         selectedText: "",
     });
 
@@ -33,24 +36,51 @@ export default function MasterForm(props) {
         });
     }
 
+    const handleSelectedC = event => {
+        const { name, value } = event.target;
+        if(value){
+            setState({
+                ...state,
+                [name]: value
+            });
+            setGuardar(false)
+        }else{
+            setGuardar(false)
+        }
+    }
+
     const handleSelected = event => {
         const { name, selectedOptions } = event.target;
         const text = selectedOptions[0].text.split("-")[0]
         const valor = 'selectedText'
-        setState({
-            ...state,
-            [valor]: text,
-            [name]: event.target.value
-        });
+        if(text){
+            setState({
+                ...state,
+                [valor]: text,
+                [name]: event.target.value
+            });
+            setGuardar(true)
+        }else{
+            setGuardar(false)
+        }
     }
 
     // Trigger an alert on form submission
     const handleSubmit = event => {
         event.preventDefault();
         //const { username, password } = state;
-        dispatch(listaParaPDF( { ...state } ))
+        if(guardar){
+            dispatch(listaParaPDF( { ...state } ))
+        }
         //alert(state.selectedValue)
     };
+
+    const handleAddItem = () => {
+        if(guardar){
+            dispatch(listaParaPDF( { ...state } ))
+        }
+        //console.log(e)
+    }
 
     // Test current step with ternary
     // _next and _previous consts will be called on button click
@@ -116,9 +146,7 @@ export default function MasterForm(props) {
         return null;
     }
 
-    useEffect(()=>{
-        console.log(data)
-    },[data])
+    useEffect(()=>{},[data])
 
     return (
         <>
@@ -129,7 +157,10 @@ export default function MasterForm(props) {
                 <Step1
                     currentStep={state.currentStep}
                     handleChange={handleSelected}
+                    handleChange2={handleSelectedC}
+                    handleOnClick={handleAddItem}
                     username={state.selectedValue}
+                    data={data}
                 />
                 <Step2
                     currentStep={state.currentStep}
