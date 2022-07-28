@@ -12,14 +12,7 @@ export default function Step1(props) {
     }
     let keyId = useId
     let keyId2 = useId
-    let valor = 0.0;
-    let valor2 = props.data.selectedCantidad
-    let total = (parseFloat( valor * valor2 )).toFixed(2)
-    let subtotal = props.data.reduce((total, currentValue) => total = total + parseFloat(currentValue.selectedValue),0.00);
-    const handleChange3 = e =>{
-        valor = e.target.value
-        console.log(valor)
-    }
+    let subtotal = props.data.reduce((total, currentValue) => total = total + parseFloat(currentValue.selectedValue * currentValue.selectedCantidad),0.00);
     return (
         <>
             <Table responsive striped size="sm">
@@ -41,7 +34,7 @@ export default function Step1(props) {
                             <td key={(keyId2+index)}>
                             <div className="selepapa ">
                                 <div className="d-flex flex-row-reverse selehijo">
-                                    <Form.Select className="transparente" name="selectedCantidad" value={props.selectedCantidad} onChange={handleChange3}>
+                                    <Form.Select className="transparente" name="selectedCantidad" id={(index+1)} value={props.data.selectedCantidad} onChange={props.handleChange2}>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -56,7 +49,7 @@ export default function Step1(props) {
                                 </div>
                             </div>
                             </td>
-                            <td><strong>{(parseFloat( datos.selectedValue * valor )).toFixed(2)}</strong></td>
+                            <td><strong>{(parseFloat( datos.selectedValue * datos.selectedCantidad )).toFixed(2)}</strong></td>
                         </tr>
                     ))
                     : <></>
