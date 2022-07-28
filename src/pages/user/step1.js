@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { Image, PlusCircle } from 'react-bootstrap-icons';
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Select from 'react-select';
 //import { useSelector } from 'react-redux';
 
 export default function Step1(props) {
@@ -34,18 +35,7 @@ export default function Step1(props) {
                             <td key={(keyId2+index)}>
                             <div className="selepapa ">
                                 <div className="d-flex flex-row-reverse selehijo">
-                                    <Form.Select className="transparente" name="selectedCantidad" id={(index+1)} value={props.data.selectedCantidad} onChange={props.handleChange2}>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
-                                    </Form.Select>
+                                    <Select options={props.lista} className="transparente" name="selectedCantidad" value={props.data.selectedCantidad} onChange={props.handleChange2} placeholder="..." />
                                 </div>
                             </div>
                             </td>

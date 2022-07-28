@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +15,49 @@ export default function MasterForm(props) {
     const data = _data[0].page.estados.variables;
     const guardar = _data[0].page.estados.guardar;
     const dispatch = useDispatch();
+
+    const listaCantidad = [
+        {
+            value:1,
+            label:"1"
+        },
+        {
+            value:2,
+            label:"2"
+        },
+        {
+            value:3,
+            label:"3"
+        },
+        {
+            value:4,
+            label:"4"
+        },
+        {
+            value:5,
+            label:"5"
+        },
+        {
+            value:6,
+            label:"6"
+        },
+        {
+            value:7,
+            label:"7"
+        },
+        {
+            value:8,
+            label:"8"
+        },
+        {
+            value:9,
+            label:"9"
+        },
+        {
+            value:10,
+            label:"10"
+        },
+    ]
 
     const [pasos, setPasos] = useState(1);
 
@@ -37,7 +79,7 @@ export default function MasterForm(props) {
     }
 
     const handleSelectedC = event => {
-        event.preventDefault();
+        //event.preventDefault();
         if (event.target.id) {
             setState({
                 id: parseInt(event.target.id),
@@ -178,7 +220,7 @@ export default function MasterForm(props) {
                     handleOnClick={handleAddItem}
                     username={state.selectedValue}
                     data={data}
-                    id={data.id}
+                    lista={listaCantidad}
                 />
                 <Step2
                     currentStep={pasos}
