@@ -1,19 +1,57 @@
-import React, {useId} from "react";
+import React, { useId, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Image, PlusCircle } from 'react-bootstrap-icons';
+import { Image, PlusCircle, Trash } from 'react-bootstrap-icons';
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Select from 'react-select';
-//import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { add, setGuardar, setEstado, update, Del } from "../../features/services/serviceStateSlice";
 
 export default function Step1(props) {
+    const _data = useSelector((state) => state.serviceState);
+    const data = _data[0].page.estados.variables;
+    let guardar = _data[0].page.estados.guardar;
+    let estado = _data[0].page.estados.estatico;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+    }, [data, _data])
+
     if (props.currentStep !== 1) {
         return null;
     }
+
+    const selectt = event => {
+        const text = event.target.selectedOptions[0].text.split("-")[0]
+        if (text) {
+            dispatch(setEstado({ ...estado, selectedText: text, selectedValue: parseFloat(event.target.value) }))
+            dispatch(setGuardar(true))
+        } else {
+            dispatch(setGuardar(false))
+        }
+    }
+
+    const handleCantidad = event => {
+        dispatch(update({ id: parseInt(event.target.id), selectedCantidad: parseInt(event.target.value) }))
+    }
+
+    const handleAddItem = () => {
+        if (guardar) {
+            dispatch(setEstado({ ...estado, id: (estado.id + 1) }))
+            dispatch(add({ ...estado }))
+            dispatch(setGuardar(false))
+        }
+    }
+
+    const handleDelItem = (id) => {
+        dispatch(Del(id))
+    }
+
     let keyId = useId
     let keyId2 = useId
-    let subtotal = props.data.reduce((total, currentValue) => total = total + parseFloat(currentValue.selectedValue * currentValue.selectedCantidad),0.00);
+    let subtotal = data.reduce((total, currentValue) => total = total + parseFloat(currentValue.selectedValue * currentValue.selectedCantidad), 0.00);
+
+
     return (
         <>
             <Table responsive striped size="sm">
@@ -24,39 +62,58 @@ export default function Step1(props) {
                         <th>Costo</th>
                         <th>Cantidad</th>
                         <th>Total</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    { props.data ? props.data.map((datos, index) => (
-                        <tr key={(keyId+index)}>
+                    {data ? data.map((datos, index) => (
+                        <tr key={(keyId + index)}>
                             <td><Image size={30} /></td>
                             <td><small>{datos.selectedText}</small></td>
                             <td>{(parseFloat(datos.selectedValue)).toFixed(2)}</td>
-                            <td key={(keyId2+index)}>
-                            <div className="selepapa ">
-                                <div className="d-flex flex-row-reverse selehijo">
-                                    <Select options={props.lista} className="transparente" name="selectedCantidad" value={props.data.selectedCantidad} onChange={props.handleChange2} placeholder="..." />
+                            <td key={(keyId2 + index)}>
+                                <div className="selepapa ">
+                                    <div className="d-flex flex-row-reverse selehijo">
+                                        <Form.Select className="transparente" name="selectedCantidad" id={(datos.id)} value={datos.selectedCantidad} onChange={handleCantidad}>
+                                            <option></option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </Form.Select>
+                                    </div>
                                 </div>
-                            </div>
                             </td>
-                            <td><strong>{(parseFloat( datos.selectedValue * datos.selectedCantidad )).toFixed(2)}</strong></td>
+                            <td><strong>{(parseFloat(datos.selectedValue * datos.selectedCantidad)).toFixed(2)}</strong></td>
+                            <td>
+                                <Button variant="btn btn-outline-secondary" id={(datos.id)} className="sinBorde" type="button" onClick={()=>handleDelItem((datos.id))}>
+                                    <Trash id={(datos.id)} />
+                                </Button>
+                            </td>
                         </tr>
                     ))
-                    : <></>
+                        : <></>
                     }
                     <tr>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Subtotal</td>
+                        <td><strong>Subtotal</strong></td>
                         <td><strong>{(subtotal).toFixed(2)}</strong></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </Table>
             <br />
             <br />
             <InputGroup>
-                <Form.Select aria-label="Default select example" name="selectedValue" value={props.selectedValue} onChange={props.handleChange}>
+                <Form.Select aria-label="Default select example" name="selectedValue" value={data.selectedValue} onChange={selectt}>
                     <option></option>
                     <optgroup label="Servicios">
                         <option value="0.10">Formularios de Solicitud de Reclamo de Nota - 0.10</option>
@@ -104,7 +161,7 @@ export default function Step1(props) {
                         <option value="0.05">Alquileres de Salones - 0.05</option>
                     </optgroup>
                 </Form.Select>
-                <Button variant="btn btn-outline-secondary" type="button" onClick={props.handleOnClick}>
+                <Button variant="btn btn-outline-secondary" type="button" onClick={handleAddItem}>
                     <PlusCircle />
                 </Button>
             </InputGroup>

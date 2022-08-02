@@ -55,3 +55,7 @@
   color: #000000!important;
   border: transparent!important;
 }
+.sinBorde{
+  border: transparent!important;
+  cursor: pointer!important;
+}
