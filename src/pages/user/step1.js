@@ -10,12 +10,12 @@ import { add, setGuardar, setEstado, update, Del } from "../../features/services
 export default function Step1(props) {
     const _data = useSelector((state) => state.serviceState);
     const data = _data[0].page.estados.variables;
-    let guardar = _data[0].page.estados.guardar;
-    let estado = _data[0].page.estados.estatico;
+    const guardar = _data[0].page.estados.guardar;
+    const estado = _data[0].page.estados.estatico;
     const dispatch = useDispatch();
 
     useEffect(() => {
-    }, [data, _data])
+    }, [data, _data, estado, guardar])
 
     if (props.currentStep !== 1) {
         return null;
@@ -36,6 +36,7 @@ export default function Step1(props) {
     }
 
     const handleAddItem = () => {
+        
         if (guardar) {
             dispatch(setEstado({ ...estado, id: (estado.id + 1) }))
             dispatch(add({ ...estado }))

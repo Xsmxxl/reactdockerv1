@@ -13,8 +13,7 @@ const initialState = [
                     selectedCantidad: 1,
                     selectedText: "",
                     total: 1
-                },
-                archivo: null
+                }
             },
             user: {
                 username: "",
@@ -61,10 +60,7 @@ export const serviceStateSlice = createSlice({
             }
         },
         setGuardar: (state, action) => {
-            state[0].page.estados.guardar = action.payload.archivo
-        },
-        setArchivo: (state, action) => {
-            state[0].page.estados.archivo = action.payload
+            state[0].page.estados.guardar = action.payload
         },
         setEstado: (state, action) => {
             state[0].page.estados.estatico.id = action.payload.id;
@@ -76,6 +72,6 @@ export const serviceStateSlice = createSlice({
     }
 })
 
-export const { login, salir, add, update, Del, setPaso, setGuardar, setEstado, setArchivo } = serviceStateSlice.actions
+export const { login, salir, add, update, Del, setPaso, setGuardar, setEstado } = serviceStateSlice.actions
 
 export default serviceStateSlice.reducer
