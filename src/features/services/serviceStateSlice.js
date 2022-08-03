@@ -3,6 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = [
     {
         page: {
+            user: {
+                username: "",
+                isLoged: false
+            },
             estados: {
                 currentStep: 1,
                 guardar: false,
@@ -14,10 +18,6 @@ const initialState = [
                     selectedText: "",
                     total: 1
                 }
-            },
-            user: {
-                username: "",
-                isLoged: false
             }
         }
     }
@@ -27,15 +27,11 @@ export const serviceStateSlice = createSlice({
     name: 'serviceState',
     initialState,
     reducers: {
-        login: (state, user) => {
-            if (user.payload.name === "xsm") {
-                if (user.payload.password === "123") {
-                    state[0].page.user.username = user.payload.name;
-                    state[0].page.user.isLoged = true;
-                    sessionStorage.removeItem('isLogged');
-                    sessionStorage.setItem('isLogged', true);
-                }
-            }
+        login: (state, action) => {
+            state[0].page.user.username = action.payload.name;
+            state[0].page.user.isLoged = true;
+            sessionStorage.removeItem('isLogged');
+            sessionStorage.setItem('isLogged', true);
         },
         salir: (state) => {
             sessionStorage.removeItem('isLogged');

@@ -3,18 +3,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
-import {motion} from 'framer-motion'
-
-/*async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}*/
+import {motion} from 'framer-motion';
+//import axios from 'axios';
 
 export default function SignUp() {
 
@@ -23,13 +13,52 @@ export default function SignUp() {
     const [username, setUserName] = useState();
     const [email, setUserEMail] = useState();
     const [password, setPassword] = useState();
-    const [password2, setPassword2] = useState();
     const [dni, setUserDNI] = useState();
+    const [phone, setUserPhone] = useState();
+    const [color, setColor] = useState("mb-3");
+    const [color2, setColor2] = useState("");
+    const [proceder, setProceder] = useState(false);
+
 
     //let eso = true;
     const handleSubmit = async e => {
-        //e.preventDefault();
-        console.log(username, dni, email, password, password2)
+        
+        
+        
+        
+        if(username){
+            if(dni){
+                if(phone){
+                    if(email){
+                        if(proceder){
+                            console.log(username, dni, email)
+                        }else{
+                            alert("Las contraseñas no son iguales")
+                        }
+                    }else{
+                        alert("Escriba su correo")
+                    }
+                }else{
+                    alert("Escriba número de celular")
+                }
+            }else{
+                alert("Escriba su cédula/pasaporte")
+            }
+        }else{
+            alert("Escriba su nombre de usuario")
+        }
+    }
+
+    const comprobar = (e)=>{
+        if(password === e.target.value){
+            setColor2("border border-success")
+            setColor("border border-success mb-3")
+            setProceder(true)
+        }else{
+            setColor2("border border-danger")
+            setColor("border border-danger mb-3")
+            setProceder(false)
+        }
     }
 
     return (
@@ -54,10 +83,13 @@ export default function SignUp() {
                             <br />
                             <Form className='mt-5'>
                                 <Form.Group className='mb-3'>
-                                    <Form.Control name='user' type="text" placeholder="usuario" onChange={e => setUserName(e.target.value)} />
+                                    <Form.Control name='username' type="text" placeholder="José Cascara" onChange={e => setUserName(e.target.value)} />
                                 </Form.Group>
                                 <Form.Group className='mb-3'>
-                                    <Form.Control name='user' type="text" placeholder="8-901-XXXX" onChange={e => setUserDNI(e.target.value)} />
+                                    <Form.Control name='dni' type="text" placeholder="8-901-XXXX" onChange={e => setUserDNI(e.target.value)} />
+                                </Form.Group>
+                                <Form.Group className='mb-3'>
+                                    <Form.Control name='phone' type="text" placeholder="6000-0001" onChange={e => setUserPhone(e.target.value)} />
                                 </Form.Group>
                                 <Form.Group className='mb-3' controlId="formBasicEmail">
                                     <Form.Control name='email' type="email" placeholder="jose.cascara@up.ac.pa" onChange={e => setUserEMail(e.target.value)} />
@@ -65,12 +97,12 @@ export default function SignUp() {
                                 <Form.Group className='mb-3' controlId="formBasicPassword">
                                     <Form.Control name='password' type="password" placeholder="Contraseña" onChange={e => setPassword(e.target.value)} />
                                 </Form.Group>
-                                <Form.Group className='mb-3' controlId="formBasicPassword2">
-                                    <Form.Control name='password2' type="password" placeholder="Repita la contraseña" onChange={e => setPassword2(e.target.value)} />
+                                <Form.Group className={color} controlId="formBasicPassword2">
+                                    <Form.Control className={color2} name='password2' type="password" placeholder="Repita la contraseña" onChange={e => comprobar(e)} />
                                 </Form.Group>
                                 <div className="d-grid">
                                     <Nav className="flex-column" onSelect={handleSubmit}>
-                                        <Nav.Link eventKey="1" href="/" className='btn btn-outline-secondary link-dark'>Registrarse</Nav.Link>
+                                        <Nav.Link eventKey="1" className='btn btn-outline-secondary link-dark'>Registrarse</Nav.Link>
                                     </Nav>
                                 </div>
                                 <br />

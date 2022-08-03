@@ -22,16 +22,15 @@ export default function Step2(props) {
         const formData = new FormData();
         formData.append('file', file);
 
-        //let url = document.location.origin + '/api/upload/img'
+        let url = document.location.protocol + '//' + document.location.hostname + '/api/img'
         
-        const {data} = await axios.post('http://192.168.0.6/api/img', formData, {
+        const {data} = await axios.post(url, formData, {
             headers: {
                 "content-type": "multipart/form-data",
                 //Authorization: `Bearer ${userInfo.token}`,
             },
         });
         console.log(data.file_name)
-
     }
 
     return (

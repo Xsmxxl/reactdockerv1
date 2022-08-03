@@ -9,23 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { login } from '../features/services/serviceStateSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
-
-import {motion} from 'framer-motion'
-
-/*async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}*/
+import axios from 'axios';
+import { motion } from 'framer-motion'
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
 
@@ -34,20 +24,32 @@ export default function Login() {
     const target1 = useRef(null);
     const target2 = useRef(null);
 
-    const handleClick = () => {
+    const handleSubmit = async e => {
+        e.preventDefault();
+        const formData = new FormData();
         if (username) {
-            //console.log("no hay username")
             if (password) {
                 setShow1(false)
                 setShow2(false)
-                if (username === "xsm") {
-                    if (password === "123") {
-                        dispatch(login({ name: username, password: password }))
-                        navigate("/resumen", {
-                            // replace: true,
-                        });
-                        window.location.reload();
-                    }
+                formData.append('email', username);
+                formData.append('password', password);
+
+                let url = document.location.protocol + '//' + document.location.hostname + '/api/login'
+
+                const { data } = await axios.post(url, formData, {
+                    headers: {
+                        "content-type": "multipart/form-data",
+                        //Authorization: `Bearer ${userInfo.token}`,
+                    },
+                });
+                if (data.username) {
+                    dispatch(login({ name: data.username }))
+                    navigate("/resumen", {
+                        // replace: true,
+                    });
+                    window.location.reload();
+                }else{
+                    alert(data.mensaje)
                 }
 
             } else {
@@ -57,16 +59,16 @@ export default function Login() {
         } else {
             setShow1(!show1)
         }
-    };
+    }
 
     return (
         <>
             <motion.div
                 className='container'
 
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                exit={{opacity: 0}}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
             >
                 <Row className='mt-0 mx-0 my-auto mt-5' xs={12}>
                     <Col xs={12} sm={3} md={3} lg={4}></Col>
@@ -81,11 +83,11 @@ export default function Login() {
                             <br />
                             <Form className='mt-5'>
                                 {/*<Form.Group className='mb-3' controlId="formBasicEmail">
-                            <Form.Label>Prueba</Form.Label>
-                            <Form.Control name='email' type="email" placeholder="jose.cascara@up.ac.pa" onChange={e => setUserName(e.target.value)}/>
-                        </Form.Group>*/}
+                                    <Form.Label>Prueba</Form.Label>
+                                    <Form.Control name='email' type="email" placeholder="jose.cascara@up.ac.pa" onChange={e => setUserName(e.target.value)}/>
+                                </Form.Group>*/}
                                 <Form.Group className='mb-3' ref={target1}>
-                                    <Form.Control name='user' type="text" placeholder="usuario" onChange={e => {setUserName(e.target.value); setShow1(false)}} />
+                                    <Form.Control name='email' type="email" placeholder="usuario" onChange={e => { setUserName(e.target.value); setShow1(false) }} />
                                     <Overlay target={target1.current} show={show1} placement="right">
                                         {(props) => (
                                             <Tooltip id="overlay-example" {...props}>
@@ -95,7 +97,7 @@ export default function Login() {
                                     </Overlay>
                                 </Form.Group>
                                 <Form.Group className='mb-3' controlId="formBasicPassword" ref={target2}>
-                                    <Form.Control name='password' type="password" placeholder="Contraseña" onChange={e => {setPassword(e.target.value); setShow2(false)}} />
+                                    <Form.Control name='password' type="password" placeholder="Contraseña" onChange={e => { setPassword(e.target.value); setShow2(false) }} />
                                     <Overlay target={target2.current} show={show2} placement="right">
                                         {(props) => (
                                             <Tooltip id="overlay-example" {...props}>
@@ -105,7 +107,7 @@ export default function Login() {
                                     </Overlay>
                                 </Form.Group>
                                 <Form.Group className='mb-3'>
-                                    <Button variant='outline-secondary btn-block' onClick={handleClick}>Entrar</Button>
+                                    <Button variant='outline-secondary btn-block' onClick={handleSubmit}>Entrar</Button>
                                 </Form.Group>
                                 <br />
                                 <br />
