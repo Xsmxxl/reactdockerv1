@@ -16,7 +16,7 @@ export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [username, setUserName] = useState();
+    const [email, setUserEmail] = useState();
     const [password, setPassword] = useState();
 
     const [show1, setShow1] = useState(false);
@@ -24,32 +24,40 @@ export default function Login() {
     const target1 = useRef(null);
     const target2 = useRef(null);
 
+    function isValidEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
+
     const handleSubmit = async e => {
         e.preventDefault();
         const formData = new FormData();
-        if (username) {
+        if (email) {
             if (password) {
                 setShow1(false)
                 setShow2(false)
-                formData.append('email', username);
+                formData.append('email', email);
                 formData.append('password', password);
 
                 let url = document.location.protocol + '//' + document.location.hostname + '/api/login'
 
-                const { data } = await axios.post(url, formData, {
-                    headers: {
-                        "content-type": "multipart/form-data",
-                        //Authorization: `Bearer ${userInfo.token}`,
-                    },
-                });
-                if (data.username) {
-                    dispatch(login({ name: data.username }))
-                    navigate("/resumen", {
-                        // replace: true,
-                    });
-                    window.location.reload();
+                if(!isValidEmail(email)){
+                    alert("Correo no válido")
                 }else{
-                    alert(data.mensaje)
+                    const { data } = await axios.post(url, formData, {
+                        headers: {
+                            "content-type": "multipart/form-data",
+                            //Authorization: `Bearer ${userInfo.token}`,
+                        },
+                    });
+                    if (data.username) {
+                        dispatch(login({ name: data.username }))
+                        navigate("/resumen", {
+                            // replace: true,
+                        });
+                        window.location.reload();
+                    } else {
+                        alert(data.mensaje)
+                    }
                 }
 
             } else {
@@ -82,12 +90,8 @@ export default function Login() {
                             />
                             <br />
                             <Form className='mt-5'>
-                                {/*<Form.Group className='mb-3' controlId="formBasicEmail">
-                                    <Form.Label>Prueba</Form.Label>
-                                    <Form.Control name='email' type="email" placeholder="jose.cascara@up.ac.pa" onChange={e => setUserName(e.target.value)}/>
-                                </Form.Group>*/}
                                 <Form.Group className='mb-3' ref={target1}>
-                                    <Form.Control name='email' type="email" placeholder="usuario" onChange={e => { setUserName(e.target.value); setShow1(false) }} />
+                                    <Form.Control name='email' id="exampleInputEmail1" aria-describedby="emailHelp" type="email" placeholder="jose.cascara@up.ac.pa" onChange={e => { setUserEmail(e.target.value); setShow1(false) }} />
                                     <Overlay target={target1.current} show={show1} placement="right">
                                         {(props) => (
                                             <Tooltip id="overlay-example" {...props}>

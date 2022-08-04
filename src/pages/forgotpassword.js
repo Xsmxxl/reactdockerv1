@@ -3,29 +3,43 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
-import {motion} from 'framer-motion'
-
-/*async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}*/
+import { motion } from 'framer-motion'
+import axios from 'axios';
 
 export default function ForgotPassword() {
 
-    //const dispatch = useDispatch();
 
     const [email, setUserEMail] = useState();
 
-    //let eso = true;
+    function isValidEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
+
     const handleSubmit = async e => {
         //e.preventDefault();
-        console.log(email)
+        const formData = new FormData();
+        formData.append('email', email);
+        let url = document.location.protocol + '//' + document.location.hostname + '/api/forgotpassword'
+        //formData.append('url', url);
+
+        if (isValidEmail(email)) {
+            const { data } = await axios.post(url, 
+                JSON.stringify({
+                    email: email,
+                    url: url
+                }), 
+                {
+            //const { data } = await axios.post(url, formData, {
+                headers: {
+                    //"content-type": "multipart/form-data",
+                    "content-type": "application/json",
+                    //Authorization: `Bearer ${userInfo.token}`,
+                },
+            });
+            console.log(data)
+        }else{
+            alert("Correo no válido")
+        }
     }
 
     return (
@@ -33,9 +47,9 @@ export default function ForgotPassword() {
             <motion.div
                 className='container'
 
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                exit={{opacity: 0}}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
             >
                 <Row className='mt-0 mx-0 my-auto mt-5' xs={12}>
                     <Col xs={12} sm={3} md={3} lg={4}></Col>
@@ -50,12 +64,12 @@ export default function ForgotPassword() {
                             <br />
                             <Form className='mt-5'>
                                 <Form.Group className='mb-3' controlId="formBasicEmail">
-                                    <Form.Label>Recuperación de contraseña</Form.Label><br/>
+                                    <Form.Label>Recuperación de contraseña</Form.Label><br />
                                     <Form.Control name='email' type="email" placeholder="jose.cascara@up.ac.pa" onChange={e => setUserEMail(e.target.value)} />
                                 </Form.Group>
                                 <div className="d-grid">
                                     <Nav className="flex-column" onSelect={handleSubmit}>
-                                        <Nav.Link eventKey="1" href="/" className='btn btn-outline-secondary link-dark'>Enviar</Nav.Link>
+                                        <Nav.Link eventKey="1" className='btn btn-outline-secondary link-dark'>Enviar</Nav.Link>
                                     </Nav>
                                 </div>
                                 <br />
