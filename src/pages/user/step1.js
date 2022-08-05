@@ -36,7 +36,7 @@ export default function Step1(props) {
     }
 
     const handleAddItem = () => {
-        
+
         if (guardar) {
             dispatch(setEstado({ ...estado, id: (estado.id + 1) }))
             dispatch(add({ ...estado }))
@@ -93,7 +93,7 @@ export default function Step1(props) {
                             </td>
                             <td><strong>{(parseFloat(datos.selectedValue * datos.selectedCantidad)).toFixed(2)}</strong></td>
                             <td>
-                                <Button variant="btn btn-outline-secondary" id={(datos.id)} className="sinBorde" type="button" onClick={()=>handleDelItem((datos.id))}>
+                                <Button variant="btn btn-outline-secondary" id={(datos.id)} className="sinBorde" type="button" onClick={() => handleDelItem((datos.id))}>
                                     <Trash id={(datos.id)} />
                                 </Button>
                             </td>

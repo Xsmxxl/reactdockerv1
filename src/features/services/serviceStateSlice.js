@@ -17,6 +17,11 @@ const initialState = [
                     selectedCantidad: 1,
                     selectedText: "",
                     total: 1
+                },
+                paraImprimir: {
+                    cantidades: [],
+                    descripciones: [],
+                    totales: []
                 }
             }
         }
@@ -64,10 +69,15 @@ export const serviceStateSlice = createSlice({
             state[0].page.estados.estatico.selectedText = action.payload.selectedText;
             state[0].page.estados.estatico.selectedCantidad = action.payload.selectedCantidad;
             state[0].page.estados.estatico.total = action.payload.total;
+        },
+        setImprimir: (state, action)=>{
+            state[0].page.estados.paraImprimir.cantidades.push(action.payload.selectedCantidad)
+            state[0].page.estados.paraImprimir.descripciones.push(action.payload.selectedText)
+            state[0].page.estados.paraImprimir.totales.push(action.payload.total)
         }
     }
 })
 
-export const { login, salir, add, update, Del, setPaso, setGuardar, setEstado } = serviceStateSlice.actions
+export const { login, salir, add, update, Del, setPaso, setGuardar, setEstado, setImprimir } = serviceStateSlice.actions
 
 export default serviceStateSlice.reducer

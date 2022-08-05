@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { add, setPaso, setGuardar } from "../../features/services/serviceStateSlice";
+import { add, setPaso, setGuardar, setImprimir } from "../../features/services/serviceStateSlice";
+import axios from 'axios';
 
 import Step1 from "./step1";
 import Step2 from "./step2";
@@ -30,9 +31,9 @@ export default function MasterForm() {
     const handleChange = event => {
         const text = event.target.selectedOptions[0].text.split("-")[0]
         if (text) {
-            dispatch( setGuardar(true))
+            dispatch(setGuardar(true))
         } else {
-            dispatch( setGuardar(false))
+            dispatch(setGuardar(false))
         }
     }
 
@@ -45,6 +46,33 @@ export default function MasterForm() {
         currentStep = currentStep >= 2 ? 3 : currentStep + 1;
         setPasos(currentStep)
         dispatch(setPaso(pasos))
+    }
+
+    const _save = async () => {
+        
+        data.forEach((datos, _) => {
+            dispatch(setImprimir({
+                selectedCantidad: datos.selectedCantidad,
+                selectedText: datos.selectedText,
+                total: datos.total
+            }))
+        })
+
+        console.log(_data[0].page.estados.paraImprimir)
+
+        /*let url = document.location.protocol + '//' + document.location.hostname + '/api/constancia'
+
+        const { datax } = await axios.post(url, JSON.stringify({
+            cantidad: state[0].page.estados.paraImprimir.cantidades,
+            total: state[0].page.estados.paraImprimir.totales,
+            descripcion: state[0].page.estados.paraImprimir.descripciones
+        }), {
+            headers: {
+                "content-type": "application/json",
+                //Authorization: `Bearer ${userInfo.token}`,
+            },
+        });
+        console.log(datax)*/
     }
 
     const _prev = () => {
@@ -86,6 +114,20 @@ export default function MasterForm() {
         return null;
     }
 
+    const saveButton = () => {
+        let currentStep = pasos;
+        // If the current step is not 3, then render the "next" button
+        if (currentStep < 2) {
+            return (
+                <Button color="float-right" variant="btn btn-outline-secondary" onClick={_save}>
+                    Guardar
+                </Button>
+            );
+        }
+        // ...else render nothing
+        return null;
+    }
+
     const submitButton = () => {
         let currentStep = pasos;
 
@@ -105,8 +147,9 @@ export default function MasterForm() {
         //alert(state.selectedValue)
     };
 
+
     useEffect(() => {
-    }, [data, _data])
+    }, [data, _data, guardar])
 
     return (
         <>
@@ -129,6 +172,7 @@ export default function MasterForm() {
             <Form onSubmit={handleSubmit}>
                 <div>
                     {previousButton()}
+                    {saveButton()}
                     {nextButton()}
                     {submitButton()}
                 </div>
